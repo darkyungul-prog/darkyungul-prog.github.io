@@ -141,7 +141,7 @@ $('loginGoogle').onclick=()=>popup(new GoogleAuthProvider());
 /* 카카오: 게임과 같은 계정으로 — 카카오 인가 코드를 게임 서버가 확인해 게임 계정 로그인 토큰을 돌려줌(Firebase 설정은 게임 그대로) */
 const KAKAO_REDIRECT='https://darkyungul-prog.github.io/community/';
 $('loginKakao').onclick=async()=>{try{const r=await fetch(API+'/api/web/kakao-config',{cache:'no-store'});const c=await r.json();if(!c.kakao||!c.restKey){status('카카오 로그인은 아직 준비 중입니다. 다른 방식으로 로그인해 주세요.',true);return}
-  const st=Array.from(crypto.getRandomValues(new Uint8Array(16)),b=>b.toString(16).padStart(2,'0')).join('');sessionStorage.setItem('kakaoState',st);sessionStorage.setItem('kakaoBoard',board);
+  const st=Array.from(crypto.getRandomValues(new Uint8Array(16)),b=>b.toString(16).padStart(2,'0')).join('');sessionStorage.setItem('kakaoState',st);sessionStorage.setItem('kakaoBoard',board);sessionStorage.setItem('kakaoPath',location.pathname);
   location.href='https://kauth.kakao.com/oauth/authorize?'+new URLSearchParams({client_id:c.restKey,redirect_uri:KAKAO_REDIRECT,response_type:'code',scope:'openid',state:st})}catch(e){status('카카오 로그인을 시작하지 못했습니다.',true)}};
 /* 게임 → 홈페이지 자동 로그인: 주소 # 뒤 h=일회용 코드(60초·1회) → 서버가 같은 계정 로그인 토큰을 줌 */
 async function handoffReturn(){const m=location.hash.match(/^#h=([A-Za-z0-9_-]{20,100})$/);if(!m)return null;history.replaceState(null,'',location.pathname+location.search);
@@ -152,7 +152,8 @@ async function kakaoReturn(){const q=new URLSearchParams(location.search);if(!q.
   if(q.has('error'))return {err:'카카오 로그인을 취소했습니다.'};
   if(!want||q.get('state')!==want)return {err:'로그인 요청이 올바르지 않습니다. 다시 시도해 주세요.'};
   status('카카오 계정을 확인하는 중…');
-  try{const d=await request('/api/web/kakao-login',{code:q.get('code'),redirectUri:KAKAO_REDIRECT},true);await signInWithCustomToken(auth,d.customToken);await afterLogin();return {done:true}}catch(e){return {err:e.message||'카카오 로그인에 실패했습니다.'}}}
+  const backPath=sessionStorage.getItem('kakaoPath')||'';sessionStorage.removeItem('kakaoPath');
+  try{const d=await request('/api/web/kakao-login',{code:q.get('code'),redirectUri:KAKAO_REDIRECT},true);await signInWithCustomToken(auth,d.customToken);if(/^\/(en|ja|zh-hant)\/community\/$/.test(backPath)){location.replace(backPath+(board==='guild'?'?board=guild':''));return {done:true}}await afterLogin();return {done:true}}catch(e){return {err:e.message||'카카오 로그인에 실패했습니다.'}}}
 $('emailForm').onsubmit=async e=>{e.preventDefault();try{await signInWithEmailAndPassword(auth,$('loginEmail').value.trim(),$('loginPw').value);$('loginPw').value='';await afterLogin()}catch(err){status(loginError(err),true)}};
 $('resetPw').onclick=async()=>{const m=$('loginEmail').value.trim();if(!m){status('이메일을 먼저 입력해 주세요.',true);return}try{await sendPasswordResetEmail(auth,m);status('비밀번호 재설정 메일을 보냈습니다. 메일함을 확인해 주세요.')}catch(e){status(loginError(e),true)}};
 $('logout').onclick=async()=>{await signOut(auth);gid='';guildName='';guildChecked=false;board==='guild'?list():status('로그아웃했습니다.')};

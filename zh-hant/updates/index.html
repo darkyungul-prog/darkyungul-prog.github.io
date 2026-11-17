@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="紅披風:阿撒茲勒的地下城各版本更新內容。">
+<link rel="canonical" href="https://red-cape-azazel-dungeon.fullledge5.chatgpt.site/updates/">
+<meta name="theme-color" content="#100c11">
+<title>紅披風更新內容 | 紅披風:阿撒茲勒的地下城</title>
+<style>
+:root{--bg:#0c0b0e;--panel:#21191d;--line:#54383b;--gold:#edc080;--muted:#bda9a4;--red:#c13f3b}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 75% 0,#48212a,transparent 40%),var(--bg);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;color:#f5eee9;min-height:100vh}header{padding:24px max(5vw,20px);display:flex;justify-content:space-between;border-bottom:1px solid var(--line);align-items:center;gap:14px;flex-wrap:wrap}a{color:inherit;text-decoration:none}header a{font-weight:900;color:var(--gold)}header .back{font-size:13px;color:#dfd2ca;font-weight:600}main{max-width:900px;margin:0 auto;padding:65px 24px 100px}.eyebrow{font-size:12px;letter-spacing:.2em;color:#e5aa76;font-weight:900}h1{font-size:clamp(35px,5vw,60px);letter-spacing:-.055em;margin:10px 0 20px}p{color:var(--muted);line-height:1.8}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}.top a.other{color:var(--gold);font-size:14px;font-weight:800;border:1px solid #7a5a4c;border-radius:20px;padding:9px 16px}
+.status{border:1px solid var(--line);border-radius:10px;padding:25px;background:var(--panel);margin-top:30px;color:var(--muted)}
+.list{margin-top:30px;display:flex;flex-direction:column;gap:12px}
+.item{border:1px solid #5e3d41;background:linear-gradient(140deg,#251a1f,#18141a);border-radius:12px;overflow:hidden}
+.item.important{border-color:#b6544b;background:linear-gradient(140deg,#3a1d22,#1b1418)}
+.item.pinned{box-shadow:0 0 0 1px #d8a25e55 inset}
+.head{width:100%;text-align:left;background:none;border:0;color:inherit;font:inherit;cursor:pointer;padding:20px 22px;display:grid;grid-template-columns:1fr auto;gap:6px 14px;align-items:center}
+.head:hover{background:#ffffff08}.head:focus-visible{outline:2px solid #d75a4a;outline-offset:-2px}
+.badges{display:flex;gap:6px;flex-wrap:wrap;grid-column:1/-1}.badge{display:inline-block;border:1px solid #a46b58;padding:4px 9px;color:#fac18d;font-size:11px;font-weight:800;border-radius:20px}
+.badge.c-maintenance{border-color:#7d8aa8;color:#c3d1f2}.badge.c-event{border-color:#5f9a6c;color:#aee6bb}.badge.c-update{border-color:#8c72c4;color:#d4c3ff}.badge.c-urgent{border-color:#e05a4f;color:#ffb1a6;background:#5b1f22}.badge.pin{border-color:#d8a25e;color:#ffd79a}.badge.ver{border-color:#d8a25e;color:#ffd79a;background:#3a2a17}.badge.new{border-color:#e05a4f;color:#fff;background:#b8362f}
+.title{font-size:18px;font-weight:850;color:#f7e3d4;line-height:1.45;overflow-wrap:anywhere}.date{font-size:12px;color:#a99692;white-space:nowrap}.arrow{grid-row:2;grid-column:2;color:var(--gold);transition:transform .2s}
+.item.open .arrow{transform:rotate(180deg)}
+.body{display:none;padding:2px 22px 24px;border-top:1px solid #4b3236;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.85;color:#ead5c6;font-size:15px}
+.item.open .body{display:block;padding-top:18px}
+.more[hidden]{display:none}.more{margin:22px auto 0;display:block;cursor:pointer;background:transparent;color:#efdfd7;padding:12px 22px;border:1px solid #8a7770;border-radius:5px;font:inherit;font-weight:800}
+.foot{margin-top:40px;color:#a7918a;font-size:12px;border-top:1px solid #4b3032;padding-top:24px}.foot a{color:var(--gold)}
+@media(max-width:700px){main{padding:45px 17px}.head{padding:17px 16px}.title{font-size:16px}.body{padding-left:16px;padding-right:16px;font-size:14px}}
+</style>
+</head>
+<body><header><a href="/zh-hant/">✦ 紅披風:阿撒茲勒的地下城</a><span><a href="/zh-hant/coupons/" class="back">優惠碼</a> · <a href="/zh-hant/community/" class="back">社群</a> · <a href="/zh-hant/" class="back">首頁 ↗</a></span></header>
+<main><div class="top"><div><div class="eyebrow">PATCH NOTES</div><h1>更新內容</h1></div><a class="other" href="/zh-hant/notices/">公告 →</a></div>
+<p>各版本的變更,最新版本在最上方。(內容以韓文撰寫)</p>
+<div id="status" class="status" role="status">載入中…</div>
+<div id="list" class="list"></div>
+<button id="more" class="more" type="button" hidden>載入更多</button>
+<div class="foot">官方消息會在此頁面與遊戲內公告。如有問題請前往<a href="/zh-hant/community/">社群</a>。</div>
+</main>
+<script>
+const API='https://dungeon-stick-server-production.up.railway.app';
+const SECTION='update',EMPTY='尚無更新內容。';
+const CAT={general:'公告',maintenance:'維護',event:'活動',update:'更新',urgent:'緊急'};
+const $=id=>document.getElementById(id);
+let page=0,total=0,shown=0;const cache={};
+const fmt=t=>new Date(t*1000).toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric'});
+function badge(text,cls){const s=document.createElement('span');s.className='badge '+cls;s.textContent=text;return s}
+async function post(path,body){const r=await fetch(API+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.error||'伺服器請求失敗。');return d}
+function render(it,first){
+  const box=document.createElement('article');box.className='item'+(it.important?' important':'')+(it.pinned?' pinned':'');box.id='n-'+it.id;
+  const head=document.createElement('button');head.type='button';head.className='head';head.setAttribute('aria-expanded','false');
+  const bs=document.createElement('div');bs.className='badges';
+  if(it.pinned)bs.append(badge('📌 置頂','pin'));
+  if(SECTION==='update'){bs.append(badge('v'+it.version,'ver'));if(first)bs.append(badge('最新','new'))}
+  else bs.append(badge(CAT[it.category]||'公告','c-'+it.category));
+  if(it.important&&it.category!=='urgent')bs.append(badge('重要','c-urgent'));
+  const title=document.createElement('div');title.className='title';title.textContent=it.title;
+  const date=document.createElement('div');date.className='date';date.textContent=fmt(it.created)+(it.updated-it.created>60?' (已編輯)':'');
+  const arrow=document.createElement('div');arrow.className='arrow';arrow.textContent='▾';arrow.setAttribute('aria-hidden','true');
+  head.append(bs,title,date,arrow);
+  const body=document.createElement('div');body.className='body';
+  head.addEventListener('click',()=>toggle(it.id,box,head,body));
+  box.append(head,body);return box;
+}
+async function toggle(id,box,head,body){
+  const open=!box.classList.contains('open');box.classList.toggle('open',open);head.setAttribute('aria-expanded',String(open));
+  if(open){history.replaceState(null,'','#'+id);if(!cache[id]){body.textContent='載入中…';try{cache[id]=(await post('/api/notice/public/detail',{id})).item.body}catch(e){body.textContent=e.message;return}}body.textContent=cache[id]}
+}
+async function load(){
+  try{
+    const d=await post('/api/notice/public/list',{section:SECTION,page});total=d.total;
+    const latest=page===0?(d.items.find(x=>!x.pinned)||{}).id:null;d.items.forEach(it=>$('list').append(render(it,it.id===latest)));shown+=d.items.length;
+    $('status').hidden=shown>0;$('status').textContent=shown?'':EMPTY;$('more').hidden=shown>=total;
+    const want=location.hash.slice(1);if(page===0&&want){const box=$('n-'+want);if(box){box.querySelector('.head').click();box.scrollIntoView({block:'center'})}}
+  }catch(e){$('status').hidden=false;$('status').textContent=e.message||'無法載入。'}
+}
+$('more').addEventListener('click',()=>{page++;load()});
+load();
+</script>
+</body></html>

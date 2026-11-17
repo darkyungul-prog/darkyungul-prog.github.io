@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#100c11">
+<meta name="description" content="Official community of Red Cloak: Azazel’s Dungeon. Chat with fellow adventurers on the free board, guild recruitment and your guild’s private board.">
+<link rel="canonical" href="https://darkyungul-prog.github.io/en/community/">
+<title>Red Cloak Community | Free Board · Guild Recruitment · Guild Board</title>
+<style>
+:root{--bg:#0e0a0f;--panel:#21191d;--line:#5e3e41;--gold:#eac08b;--red:#c4443f;--muted:#c6afaa}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 90% 0,#392027,transparent 48%),var(--bg);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;color:#f6eeea;min-height:100vh}button,input,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
+header{border-bottom:1px solid var(--line);padding:22px max(4vw,20px);display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}
+header>a{color:var(--gold);font-weight:900}.top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.top-actions span{color:var(--muted);font-size:13px}
+main{max-width:1160px;margin:auto;padding:58px 22px 100px}.eyebrow{color:var(--gold);letter-spacing:.22em;font-size:12px;font-weight:900}h1{font-size:clamp(34px,5vw,57px);letter-spacing:-.06em;margin:12px 0}h2{font-size:24px;margin:0}.intro{color:var(--muted);line-height:1.8;margin:0 0 35px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:23px}.tabs button{padding:13px 19px;background:#241a20;border:1px solid var(--line);color:#f0dacf;border-radius:7px;font-weight:800}.tabs button.active{background:#913632;border-color:#df7361;color:white}
+.panel{background:#21191d;border:1px solid var(--line);border-radius:13px;padding:26px;margin:20px 0}.row{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}.muted{color:var(--muted);font-size:13px;line-height:1.8}.hidden{display:none!important}
+button.primary{border:1px solid #e67b6b;background:var(--red);color:white;border-radius:6px;padding:11px 18px;font-weight:850}button.secondary{border:1px solid #81615c;background:#20191e;color:#f4dfd0;border-radius:6px;padding:10px 14px}button.danger{color:#f6b8b2;border:1px solid #9a5557;background:transparent;border-radius:5px;padding:7px 10px;font-size:12px}
+input,textarea{display:block;width:100%;background:#110f13;border:1px solid #725359;color:#f5ece8;border-radius:7px;padding:13px;margin-top:7px}textarea{min-height:150px;resize:vertical;line-height:1.8}label{display:block;font-size:13px;color:#e6c8b8;font-weight:800;margin:14px 0}input:focus,textarea:focus{outline:2px solid #bf6255;outline-offset:1px}
+.guild-banner{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.guild-banner strong{font-size:20px;color:var(--gold)}.guild-role{font-size:12px;border:1px solid #81615c;border-radius:20px;padding:4px 10px;color:#f4dfd0}.guild-hint{margin:10px 0 0}.login-box{max-width:460px}.login-box .opts{display:grid;gap:10px;margin-top:16px}.login-box .opts button{width:100%;padding:13px;font-weight:850;border-radius:7px}.btn-google{background:#f4efe9;color:#1d1a1c;border:1px solid #f4efe9}.btn-kakao{background:#fee500;color:#191600;border:1px solid #fee500}.email-form{margin-top:6px;border-top:1px solid var(--line);padding-top:6px}.email-form .links{display:flex;justify-content:space-between;margin-top:10px}.linkbtn{background:none;border:0;color:var(--gold);font-size:12px;padding:0;text-decoration:underline}
+.board-list{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:20px}.board-head,.post-row{display:grid;grid-template-columns:minmax(0,1fr) 150px 110px 75px;gap:15px;align-items:center;padding:16px 19px}.board-head{background:#322126;color:var(--gold);font-size:13px;font-weight:900}.post-row{border-top:1px solid #4f3439;background:#1a151a}.post-row:hover{background:#2c1e23}.post-title{font-weight:800;text-align:left;color:#f5e6dd;border:0;background:none;padding:0}.post-title:hover{color:var(--gold)}.post-row .muted{font-size:12px}
+.status{padding:16px;border:1px solid #735156;border-radius:8px;background:#2d2025;color:#d8bfb8;margin:17px 0;line-height:1.6}.status:empty{display:none}.status.error{border-color:#a7474a;color:#ffd1cc}
+.post-body{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.95;color:#e6d6cd;padding:18px 0;border-top:1px solid var(--line);margin-top:20px}.post-meta{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:14px}.comment{border-top:1px solid #4a3035;padding:16px 0}.comment-body{white-space:pre-wrap;line-height:1.8;overflow-wrap:anywhere}.comment-head{display:flex;justify-content:space-between;gap:10px;color:var(--gold);font-size:13px;font-weight:800}.comment-date{color:var(--muted);font-size:11px;font-weight:400}.post-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.pager{display:flex;gap:9px;justify-content:center;margin-top:20px}
+@media(max-width:730px){main{padding:40px 16px}.panel{padding:18px}.board-head{display:none}.post-row{grid-template-columns:1fr 1fr;gap:5px 12px}.post-row>div:first-child{grid-column:1/-1}.post-row>div:last-child{text-align:right}.tabs button{flex:1;padding:12px 9px;font-size:12px}.top-actions button{font-size:12px}}
+</style>
+</head>
+<body>
+<header><a href="/en/">✦ Red Cloak: Azazel’s Dungeon</a><div class="top-actions"><span id="identity">Not signed in</span><button id="login" class="secondary">Sign in</button><button id="logout" class="secondary hidden">Sign out</button><a href="/en/" class="secondary">Home</a></div></header>
+<main>
+<div class="eyebrow">OFFICIAL COMMUNITY</div><h1>Adventurer Community</h1><p class="intro">Talk with fellow adventurers and recruit guild members. Posting and commenting require signing in with <b>your game account</b>(Google · Kakao · email).</p>
+<div class="tabs" role="tablist"><button data-board="free" class="active">Free Board</button><button data-board="recruit">Guild Recruitment</button><button data-board="guild">My Guild</button></div>
+<section id="loginView" class="panel login-box hidden"><div class="row"><h2>Sign in</h2><button id="closeLogin" class="secondary">Close</button></div><p class="muted">Sign in using the <b>same method as in the game</b> so you’re connected to the same account and guild.</p>
+<div class="opts"><button id="loginGoogle" class="btn-google" type="button">G&nbsp; Sign in with Google</button><button id="loginKakao" class="btn-kakao" type="button">💬 Sign in with Kakao</button></div>
+<form id="emailForm" class="email-form"><label>Email<input id="loginEmail" type="email" autocomplete="username" required></label><label>Password<input id="loginPw" type="password" autocomplete="current-password" required minlength="6"></label><button class="primary" type="submit" style="width:100%">Sign in with email</button><div class="links"><span class="muted">Please create your account in the game.</span><button id="resetPw" class="linkbtn" type="button">Forgot password</button></div></form></section>
+<div id="guildEntry" class="panel hidden"><div id="guildBanner" class="guild-banner"></div><p id="guildHint" class="muted guild-hint">Sign in with your game account and we’ll find and open your guild automatically. Only guild members can see it, and the server re-checks membership on every request.</p></div>
+<div id="message" class="status" role="status"></div>
+<section id="moderationView" class="panel hidden"><div class="row"><h2>Report moderation</h2><button id="closeMod" class="secondary">Back to board</button></div><p class="muted">Review reported posts and comments, then hide them or resolve the report.</p><div id="reports"></div></section>
+<section id="listView" class="panel">
+  <div class="row"><div><h2 id="boardTitle">Free Board</h2><p id="boardCaption" class="muted">Share game talk, questions and strategies.</p></div><button id="compose" class="primary">+ New post</button></div>
+  <div class="board-list"><div class="board-head"><span>Title</span><span>Author</span><span>Date</span><span>Comments</span></div><div id="posts"></div></div>
+  <div class="pager"><button id="prev" class="secondary">Prev</button><span id="pageText" class="muted"></span><button id="next" class="secondary">Next</button></div>
+</section>
+<section id="composeView" class="panel hidden"><div class="row"><h2>New post</h2><button class="secondary" data-back>Back to list</button></div><form id="postForm"><label>Title<input id="postTitle" required minlength="2" maxlength="80" placeholder="Enter a title"></label><label>Content<textarea id="postBody" required minlength="5" maxlength="3000" placeholder="Please be respectful to each other."></textarea></label><button class="primary" type="submit">Post</button></form></section>
+<section id="detailView" class="panel hidden"><div class="row"><h2 id="detailTitle"></h2><button class="secondary" data-back>Back to list</button></div><div id="detailMeta" class="post-meta"></div><div id="detailBody" class="post-body"></div><div id="detailActions" class="post-actions"></div><h2 style="margin-top:35px;font-size:19px">Comments</h2><div id="comments"></div><form id="commentForm"><label for="commentBody">Write a comment<textarea id="commentBody" maxlength="500" style="min-height:90px" required placeholder="Write a comment"></textarea></label><button class="primary" type="submit">Comment</button></form></section>
+<p class="muted">Spam, abuse, impersonation and sharing personal info are not allowed. Please report inappropriate posts. Guild posts are visible only to that guild’s members. <button id="openMod" class="secondary hidden">Report moderation</button></p>
+</main>
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
+import {getAuth,GoogleAuthProvider,OAuthProvider,signInWithPopup,signInWithEmailAndPassword,signInWithCustomToken,sendPasswordResetEmail,signOut,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
+const API='https://dungeon-stick-server-production.up.railway.app';
+const app=initializeApp({apiKey:'AIzaSyBo49I2sQgC8CF3EdVrwjRWgX6MI01gfBc',authDomain:'dungeon-stick.firebaseapp.com',projectId:'dungeon-stick'});
+const auth=getAuth(app),$=id=>document.getElementById(id);
+let board='free',gid='',guildName='',page=0,currentPost=null,user=null,guildChecked=false;
+const boardInfo={free:['Free Board','Share game talk, questions and strategies.'],recruit:['Guild Recruitment','Introduce your guild and post recruitment info.'],guild:['My Guild','A space only your guild members can see.']};
+function status(s='',error=false){$('message').textContent=s;$('message').className='status'+(error?' error':'')}
+function show(view){for(const id of ['listView','composeView','detailView','moderationView','loginView'])$(id).classList.toggle('hidden',id!==view)}
+function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
+function date(t){return new Date(t*1000).toLocaleDateString('en-US')}
+async function request(path,body,guest=false){
+  const headers={'Content-Type':'application/json'};
+  if(!guest){if(!auth.currentUser)throw Error('Please sign in first.');headers.Authorization='Bearer '+await auth.currentUser.getIdToken()}
+  const r=await fetch(API+path,{method:'POST',headers,body:JSON.stringify(body),cache:'no-store'});
+  const data=await r.json().catch(()=>({}));if(!r.ok)throw Error(data.error||'Couldn’t connect to the server.');return data;
+}
+const ROLE={leader:'Leader',officer:'Officer',member:'Member'};
+function guildBanner(){const b=$('guildBanner');b.replaceChildren();
+  if(!user){b.append(el('strong','','Sign-in required'));const btn=el('button','primary','Sign in');btn.onclick=openLogin;b.append(btn);return}
+  if(!guildChecked){b.append(el('span','muted','Looking for your guild…'));return}
+  if(gid){b.append(el('strong','','🏰 '+(guildName||'My guild')));b.append(el('span','guild-role',ROLE[guildRole]||'Member'));return}
+  b.append(el('strong','','No guild joined'));if(pendingName)b.append(el('span','guild-role','Join request pending: '+pendingName));
+}
+let guildRole='',pendingName='';
+async function findGuild(){
+  gid='';guildName='';guildRole='';pendingName='';guildChecked=false;guildBanner();
+  if(!auth.currentUser){guildChecked=true;guildBanner();return}
+  try{const r=await request('/api/board/my-guild',{});if(r.found&&r.gid){gid=r.gid;guildName=r.name||'';guildRole=r.role||''}else pendingName=r.pendingName||''}
+  catch(e){status('Guild check failed: '+e.message,true)}
+  guildChecked=true;guildBanner();
+}
+async function checkModerator(){
+  if(!auth.currentUser){$('openMod').classList.add('hidden');return}
+  try{await request('/api/board/moderation',{});$('openMod').classList.remove('hidden')}catch(_){$('openMod').classList.add('hidden')}
+}
+async function showModeration(){
+  try{const data=await request('/api/board/moderation',{});show('moderationView');$('reports').replaceChildren();status();
+    if(!data.reports.length){$('reports').append(el('p','muted','No pending reports.'));return}
+    for(const r of data.reports){const item=el('div','comment');item.append(el('div','comment-head',(r.target_type==='post'?'Post':'Comments')+' · Report '+r.report_count+' ·  '+(r.kind||'')),el('div','comment-body',(r.content||'[Deleted content]').slice(0,300)),el('p','muted','Reason: '+(r.reason||'none')));
+      const actions=el('div','post-actions');for(const [action,label] of [['hide','Hide content'],['dismiss','Resolve report only']]){const btn=el('button',action==='hide'?'danger':'secondary',label);btn.onclick=async()=>{if(!confirm(label+'  — proceed?'))return;try{await request('/api/board/moderate',{action,type:r.target_type,id:r.target_id});await showModeration()}catch(e){status(e.message,true)}};actions.append(btn)}item.append(actions);$('reports').append(item)}
+  }catch(e){status(e.message,true)}
+}
+async function list(){
+  $('boardTitle').textContent=boardInfo[board][0];$('boardCaption').textContent=boardInfo[board][1];
+  $('guildEntry').classList.toggle('hidden',board!=='guild');
+  show('listView');$('posts').replaceChildren();status();
+  if(board==='guild'){if(!guildChecked)await findGuild();guildBanner();$('compose').classList.toggle('hidden',!gid);$('pageText').textContent='';if(!user){status('Sign in with your game account to view your guild board.');return}if(!gid){status('You haven’t joined a guild. Join one in the game to use your guild board here.');return}}else $('compose').classList.remove('hidden');
+  try{
+    let data;
+    if(board==='guild')data=await request('/api/board/list',{kind:'guild',gid,page});
+    else if(page===0){const r=await fetch(API+'/api/board/'+(board==='free'?'free':'recruit'),{cache:'no-store'});data=await r.json();if(!r.ok)throw Error(data.error||'Failed to load list')}
+    else data=await request('/api/board/public/list',{kind:board,page},true);
+    for(const p of data.posts||[]){
+      const row=el('div','post-row'),first=el('div');
+      const title=el('button','post-title',p.title);title.onclick=()=>detail(p.id);first.append(title);
+      row.append(first,el('div','muted',p.nickname),el('div','muted',date(p.created)),el('div','muted',String(p.comments||0)));$('posts').append(row);
+    }
+    if(!(data.posts||[]).length)$('posts').append(el('div','status','No posts yet. Be the first to write one!'));
+    $('pageText').textContent=(page+1)+' page';$('prev').disabled=page===0;$('next').disabled=(page+1)*20>=(data.total||0);
+  }catch(e){status(e.message,true);if(board==='guild'&&/길드원이 아닙니다|403/.test(e.message)){guildChecked=false;await findGuild()}}
+}
+async function detail(id){
+  try{
+    const data=board==='guild'?await request('/api/board/detail',{id}):
+      auth.currentUser?await request('/api/board/detail',{id}):await request('/api/board/public/detail',{id},true);
+    currentPost=id;const p=data.post;show('detailView');status();
+    $('detailTitle').textContent=p.title;$('detailMeta').replaceChildren(el('span','',p.nickname),el('span','',date(p.created)));
+    $('detailBody').textContent=p.body;$('detailActions').replaceChildren();$('comments').replaceChildren();
+    actionButtons($('detailActions'),p,'post');
+    for(const c of data.comments){const box=el('div','comment'),head=el('div','comment-head');
+      head.append(el('span','',c.nickname),el('span','comment-date',date(c.created)));
+      box.append(head,el('div','comment-body',c.body));const actions=el('div','post-actions');actionButtons(actions,c,'comment');box.append(actions);$('comments').append(box);
+    }
+    $('commentForm').classList.toggle('hidden',!user);
+  }catch(e){status(e.message,true);if(board==='guild'&&/길드원이 아닙니다/.test(e.message)){guildChecked=false;await list()}}
+}
+function actionButtons(container,item,type){
+  if(user&&item.mine){const del=el('button','danger','Delete');del.onclick=async()=>{if(!confirm('Delete this?'))return;try{await request('/api/board/delete',{type,id:item.id});type==='post'?await list():await detail(currentPost)}catch(e){status(e.message,true)}};container.append(del)}
+  if(user){const report=el('button','secondary','Report');report.onclick=async()=>{if(!confirm('Report this as inappropriate?'))return;try{await request('/api/board/report',{type,id:item.id,reason:'Inappropriate content'});status('Report submitted.')}catch(e){status(e.message,true)}};container.append(report)}
+}
+document.querySelectorAll('[data-board]').forEach(btn=>btn.onclick=()=>{board=btn.dataset.board;page=0;if(board==='guild')guildChecked=false;document.querySelectorAll('[data-board]').forEach(b=>b.classList.toggle('active',b===btn));list()});
+$('openMod').onclick=showModeration;$('closeMod').onclick=list;
+$('compose').onclick=()=>{if(!user){status('Please sign in to write a post.',true);openLogin();return}if(board==='guild'&&!gid){status('You haven’t joined a guild.',true);return}show('composeView');status()};
+document.querySelectorAll('[data-back]').forEach(b=>b.onclick=list);
+$('prev').onclick=()=>{page=Math.max(0,page-1);list()};$('next').onclick=()=>{page++;list()};
+$('postForm').onsubmit=async e=>{e.preventDefault();try{const data=await request('/api/board/create',{kind:board,gid,title:$('postTitle').value,body:$('postBody').value});$('postForm').reset();await detail(data.id)}catch(err){status(err.message,true)}};
+$('commentForm').onsubmit=async e=>{e.preventDefault();try{await request('/api/board/comment',{id:currentPost,body:$('commentBody').value});$('commentBody').value='';await detail(currentPost)}catch(err){status(err.message,true)}};
+function openLogin(){show('loginView');status()}
+function loginError(e){const c=String(e?.code||e?.message||'');if(/popup-closed|cancelled-popup/.test(c))return 'The sign-in window was closed.';if(/popup-blocked/.test(c))return 'Please allow pop-ups and try again.';if(/invalid-credential|wrong-password|user-not-found|invalid-login/.test(c))return 'Incorrect email or password.';if(/too-many-requests/.test(c))return 'Too many attempts. Please try again later.';if(/operation-not-allowed|configuration-not-found|invalid-oauth|unauthorized-domain/.test(c))return 'This sign-in method isn’t available on the website yet. Please use another method.';if(/account-exists-with-different-credential/.test(c))return 'This email is registered with a different sign-in method. Please sign in the same way you do in the game.';return 'Sign-in failed: '+(e?.message||c)}
+async function afterLogin(){guildChecked=false;status('Signed in.');list()}
+async function popup(provider){try{await signInWithPopup(auth,provider);await afterLogin()}catch(e){status(loginError(e),true)}}
+$('login').onclick=openLogin;$('closeLogin').onclick=list;
+$('loginGoogle').onclick=()=>popup(new GoogleAuthProvider());
+/* 카카오: 게임과 같은 계정으로 — 카카오 인가 코드를 게임 서버가 확인해 게임 계정 Sign in 토큰을 돌려줌(Firebase 설정은 게임 그대로) */
+const KAKAO_REDIRECT='https://darkyungul-prog.github.io/en/community/';
+$('loginKakao').onclick=async()=>{try{const r=await fetch(API+'/api/web/kakao-config',{cache:'no-store'});const c=await r.json();if(!c.kakao||!c.restKey){status('Kakao sign-in isn’t ready yet. Please use another method.',true);return}
+  const st=Array.from(crypto.getRandomValues(new Uint8Array(16)),b=>b.toString(16).padStart(2,'0')).join('');sessionStorage.setItem('kakaoState',st);sessionStorage.setItem('kakaoBoard',board);sessionStorage.setItem('kakaoPath',location.pathname);
+  location.href='https://kauth.kakao.com/oauth/authorize?'+new URLSearchParams({client_id:c.restKey,redirect_uri:KAKAO_REDIRECT,response_type:'code',scope:'openid',state:st})}catch(e){status('Couldn’t start Kakao sign-in.',true)}};
+/* 게임 → 홈 page 자동 Sign in: 주소 # 뒤 h=일회용 코드(60초·1회) → 서버가 같은 계정 Sign in 토큰을 줌 */
+async function handoffReturn(){const m=location.hash.match(/^#h=([A-Za-z0-9_-]{20,100})$/);if(!m)return null;history.replaceState(null,'',location.pathname+location.search);
+  status('Signing in with your game account…');
+  try{const d=await request('/api/web/handoff/redeem',{code:m[1]},true);await signInWithCustomToken(auth,d.customToken);guildChecked=false;status('Signed in with your game account.');await list();return {done:true}}catch(e){return {err:(e.message||'Automatic sign-in failed.')+' Please sign in with the button below.'}}}
+async function kakaoReturn(){const q=new URLSearchParams(location.search);if(!q.has('code')&&!q.has('error'))return {};const want=sessionStorage.getItem('kakaoState');const back=sessionStorage.getItem('kakaoBoard');sessionStorage.removeItem('kakaoState');sessionStorage.removeItem('kakaoBoard');history.replaceState(null,'',location.pathname);
+  if(back&&boardInfo[back]){board=back;document.querySelectorAll('[data-board]').forEach(b=>b.classList.toggle('active',b.dataset.board===board))}
+  if(q.has('error'))return {err:'Kakao sign-in cancelled.'};
+  if(!want||q.get('state')!==want)return {err:'Invalid sign-in request. Please try again.'};
+  status('Checking your Kakao account…');
+  const backPath=sessionStorage.getItem('kakaoPath')||'';sessionStorage.removeItem('kakaoPath');
+  try{const d=await request('/api/web/kakao-login',{code:q.get('code'),redirectUri:KAKAO_REDIRECT},true);await signInWithCustomToken(auth,d.customToken);if(/^\/(en|ja|zh-hant)\/community\/$/.test(backPath)){location.replace(backPath+(board==='guild'?'?board=guild':''));return {done:true}}await afterLogin();return {done:true}}catch(e){return {err:e.message||'Kakao sign-in failed.'}}}
+$('emailForm').onsubmit=async e=>{e.preventDefault();try{await signInWithEmailAndPassword(auth,$('loginEmail').value.trim(),$('loginPw').value);$('loginPw').value='';await afterLogin()}catch(err){status(loginError(err),true)}};
+$('resetPw').onclick=async()=>{const m=$('loginEmail').value.trim();if(!m){status('Please enter your email first.',true);return}try{await sendPasswordResetEmail(auth,m);status('Password reset email sent. Please check your inbox.')}catch(e){status(loginError(e),true)}};
+$('logout').onclick=async()=>{await signOut(auth);gid='';guildName='';guildChecked=false;board==='guild'?list():status('Signed out.')};
+onAuthStateChanged(auth,u=>{const changed=(user?.uid||'')!==(u?.uid||'');user=u;$('login').classList.toggle('hidden',!!u);$('logout').classList.toggle('hidden',!u);$('identity').textContent=u?(u.displayName||u.email||'Signed in'):'Not signed in';$('commentForm').classList.toggle('hidden',!u);checkModerator();if(changed){gid='';guildChecked=false;if(board==='guild')list()}});
+if(new URLSearchParams(location.search).get('board')==='guild'){board='guild';document.querySelectorAll('[data-board]').forEach(b=>b.classList.toggle('active',b.dataset.board==='guild'))}
+(async()=>{const q=new URLSearchParams(location.search);if(q.get('board')==='guild'){board='guild';document.querySelectorAll('[data-board]').forEach(b=>b.classList.toggle('active',b.dataset.board==='guild'))}return (await handoffReturn())||(await kakaoReturn())})().then(async r=>{if(r&&r.done)return;await list();if(r&&r.err)status(r.err,true)},()=>list());
+</script>
+</body></html>

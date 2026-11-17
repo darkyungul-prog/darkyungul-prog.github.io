@@ -8,4 +8,16 @@
   <url><loc>https://darkyungul-prog.github.io/en/</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
   <url><loc>https://darkyungul-prog.github.io/ja/</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
   <url><loc>https://darkyungul-prog.github.io/zh-hant/</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/en/notices/</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/en/updates/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/en/coupons/</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/en/community/</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/ja/notices/</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/ja/updates/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/ja/coupons/</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/ja/community/</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/zh-hant/notices/</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/zh-hant/updates/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/zh-hant/coupons/</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/zh-hant/community/</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
 </urlset>
