@@ -20,4 +20,8 @@
   <url><loc>https://darkyungul-prog.github.io/zh-hant/updates/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
   <url><loc>https://darkyungul-prog.github.io/zh-hant/coupons/</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
   <url><loc>https://darkyungul-prog.github.io/zh-hant/community/</loc><changefreq>daily</changefreq><priority>0.5</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/support/</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/en/support/</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/ja/support/</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://darkyungul-prog.github.io/zh-hant/support/</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
 </urlset>

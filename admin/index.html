@@ -23,7 +23,7 @@
   <div class="row"><div><p class="tag">CONTROL CENTER</p><h1>운영 관리</h1><p>실제 게임 서버에 연결된 쿠폰과 홈페이지 공지사항·업데이트 내역을 관리합니다.</p></div><button id="refresh" class="secondary">새로고침 ↻</button></div>
   <div id="appStatus" class="status" role="status"></div>
   <div class="summary"><div><strong id="totalCodes">—</strong><small>등록된 쿠폰</small></div><div><strong id="totalUses">—</strong><small>누적 사용 횟수</small></div><div><strong id="activeCodes">—</strong><small>사용 가능 쿠폰</small></div></div>
-  <div class="tabs"><button id="tabCreate" class="active" type="button">＋ 쿠폰 생성</button><button id="tabList" class="secondary" type="button">쿠폰 목록</button><button id="tabNoticeEdit" class="secondary" type="button">📢 공지·업데이트 작성</button><button id="tabNoticeList" class="secondary" type="button">공지·업데이트 목록</button></div>
+  <div class="tabs"><button id="tabCreate" class="active" type="button">＋ 쿠폰 생성</button><button id="tabList" class="secondary" type="button">쿠폰 목록</button><button id="tabNoticeEdit" class="secondary" type="button">📢 공지·업데이트 작성</button><button id="tabNoticeList" class="secondary" type="button">공지·업데이트 목록</button><button id="tabInbox" class="secondary" type="button">📮 문의함 <span id="inboxCount"></span></button></div>
   <section id="createPanel" class="card"><h2>새 쿠폰 생성</h2>
     <form id="couponForm">
       <div class="grid"><div><label for="couponCode">실제 쿠폰번호 · 영문 대문자/숫자 4~20자</label><input id="couponCode" minlength="4" maxlength="20" required pattern="[A-Za-z0-9]{4,20}" placeholder="REDCAPE2026"></div><div><label for="memo">쿠폰 이름·설명 (최대 40자)</label><input id="memo" maxlength="40" required placeholder="게임 출시 축하쿠폰"></div></div>
@@ -47,6 +47,9 @@
     </form><p class="fineprint">공개를 끄면 관리자만 볼 수 있는 초안으로 저장됩니다. 삭제한 글은 홈페이지에서 사라지지만 서버에는 기록이 남습니다.</p>
   </section>
   <section id="noticeListPanel" class="card hide"><div class="row"><h2>공지·업데이트 목록</h2><div class="actions" style="margin:0"><select id="nFilter" style="width:auto"><option value="notice">공지사항</option><option value="update">업데이트 내역</option></select><a id="nPublicLink" href="/notices/" target="_blank" rel="noopener" style="color:var(--gold);align-self:center">홈페이지에서 보기 ↗</a></div></div><div class="table-scroll"><table><thead><tr><th>종류</th><th>제목</th><th>상태</th><th>작성일</th><th>관리</th></tr></thead><tbody id="noticeRows"></tbody></table></div></section>
+  <section id="inboxPanel" class="card hide"><div class="row"><h2>📮 문의함</h2><div class="actions" style="margin:0"><select id="qFilter"><option value="open">새 문의</option><option value="answered">답변 완료</option><option value="closed">닫음</option><option value="all">전체</option></select><a href="/support/" target="_blank" rel="noopener" style="color:var(--gold);padding:10px">문의하기 화면 보기 ↗</a></div></div>
+    <div id="qList"></div>
+    <p class="fineprint">게임 계정으로 보낸 문의에 답하면 게임 우편함에도 「📮 문의 답변」으로 들어가요. 손님 문의는 적힌 이메일로 직접 답장해 주세요(답변을 저장해 두면 기록이 남아요).</p></section>
 </section>
 </main>
 <script type="module">
@@ -69,7 +72,7 @@ async function gameRequest(path,body){
 }
 async function renewToken(){if(!session||Date.now()<session.expiry-60000)return;if(!auth.currentUser)throw Error('로그인이 만료되었습니다.');session.idToken=await auth.currentUser.getIdToken(true);session.expiry=Date.now()+50*60*1000}
 async function safeRequest(path,body){await renewToken();return gameRequest(path,body)}
-async function refresh(){const data=await safeRequest('/api/event/admin');coupons=Array.isArray(data.coupons)?data.coupons:[];await refreshPublished();$('totalCodes').textContent=coupons.length;$('totalUses').textContent=coupons.reduce((a,c)=>a+(c.uses||0),0).toLocaleString();$('activeCodes').textContent=coupons.filter(c=>(!c.expires||c.expires*1000>Date.now())&&(!c.maxUses||c.uses<c.maxUses)).length;renderRows();message('appStatus','쿠폰 목록을 불러왔습니다.',true)}
+async function refresh(){const data=await safeRequest('/api/event/admin');coupons=Array.isArray(data.coupons)?data.coupons:[];await refreshPublished();$('totalCodes').textContent=coupons.length;$('totalUses').textContent=coupons.reduce((a,c)=>a+(c.uses||0),0).toLocaleString();$('activeCodes').textContent=coupons.filter(c=>(!c.expires||c.expires*1000>Date.now())&&(!c.maxUses||c.uses<c.maxUses)).length;renderRows();message('appStatus','쿠폰 목록을 불러왔습니다.',true);refreshInbox().catch(()=>{})}
 async function refreshPublished(){}
 function rewardText(r){const gems=(Number(r?.red)||0)+(Number(r?.gems)||0);const parts=[];if(gems>0)parts.push('보석 '+gems.toLocaleString());for(const [key,name] of Object.entries({coins:'골드',tickets:'도전권',drawTickets:'뽑기권'}))if(Number(r?.[key])>0)parts.push(name+' '+Number(r[key]).toLocaleString());return parts.join(' · ')||'—'}
 function updatePreview(){const values={};for(const key of ['gems','coins','tickets','drawTickets'])values[key]=Number($(key).value)||0;$('couponPreview').textContent=($('memo').value.trim()||'게임 출시 축하쿠폰')+' : 보상 '+rewardText(values)+' | '+($('couponCode').value.trim().toUpperCase()||'REDCAPE2026')}
@@ -79,8 +82,8 @@ async function togglePublished(c,publish){if(!confirm(c.code+(publish?' 쿠폰�
 async function logout(){session=null;await signOut(auth).catch(()=>{});$('adminApp').classList.add('hide');$('loginArea').classList.remove('hide');$('logout').classList.add('hide')}
 $('loginButton').addEventListener('click',async()=>{$('loginButton').disabled=true;try{const result=await signInWithPopup(auth,new GoogleAuthProvider());const idToken=await result.user.getIdToken();session={idToken,refreshToken:result.user.refreshToken,expiry:Date.now()+50*60*1000};await refresh();$('loginArea').classList.add('hide');$('adminApp').classList.remove('hide');$('logout').classList.remove('hide')}catch(error){session=null;await signOut(auth).catch(()=>{});message('loginStatus',errorText(error))}finally{$('loginButton').disabled=false}});
 $('logout').addEventListener('click',logout);$('refresh').addEventListener('click',()=>refresh().catch(e=>message('appStatus',errorText(e))));
-const TABS={create:['createPanel','tabCreate'],list:['listPanel','tabList'],noticeEdit:['noticeEditPanel','tabNoticeEdit'],noticeList:['noticeListPanel','tabNoticeList']};
-function tab(name){for(const [k,[panel,btn]] of Object.entries(TABS)){$(panel).classList.toggle('hide',k!==name);$(btn).className=k===name?'active':'secondary'}if(name==='noticeList')refreshNotices().catch(e=>message('appStatus',errorText(e)))}
+const TABS={create:['createPanel','tabCreate'],list:['listPanel','tabList'],noticeEdit:['noticeEditPanel','tabNoticeEdit'],noticeList:['noticeListPanel','tabNoticeList'],inbox:['inboxPanel','tabInbox']};
+function tab(name){for(const [k,[panel,btn]] of Object.entries(TABS)){$(panel).classList.toggle('hide',k!==name);$(btn).className=k===name?'active':'secondary'}if(name==='noticeList')refreshNotices().catch(e=>message('appStatus',errorText(e)));if(name==='inbox')refreshInbox().catch(e=>message('appStatus',errorText(e)))}
 for(const k of Object.keys(TABS))$(TABS[k][1]).addEventListener('click',()=>tab(k));
 const NCAT={general:'일반',maintenance:'점검',event:'이벤트',update:'업데이트',urgent:'긴급'};let notices=[],editingId='';
 function syncSection(){const up=$('nSection').value==='update';$('nVersionBox').classList.toggle('hide',!up);$('nCategoryBox').classList.toggle('hide',up)}
@@ -99,5 +102,21 @@ $('nFilter').addEventListener('change',()=>refreshNotices().catch(e=>message('ap
 
 $('couponForm').addEventListener('submit',async e=>{e.preventDefault();const code=$('couponCode').value.toUpperCase().replace(/[\s-]/g,'');const body={code,memo:$('memo').value,days:Number($('days').value),maxUses:Number($('maxUses').value)};for(const key of ['gems','coins','tickets','drawTickets'])body[key]=Number($(key).value)||0;if(!['gems','coins','tickets','drawTickets'].some(k=>body[k]>0)){message('appStatus','보상을 하나 이상 설정해 주세요.');return}if(!confirm(code+' 쿠폰을 실제 게임 서버에 발급하시겠습니까?'))return;$('createButton').disabled=true;try{await safeRequest('/api/event/admin/coupon',body);await refresh();message('appStatus',code+' 쿠폰이 생성되었습니다.',true);$('couponForm').reset()}catch(error){message('appStatus',errorText(error))}finally{$('createButton').disabled=false}});
 async function deleteCoupon(code){if(!confirm(code+' 쿠폰을 삭제하시겠습니까? 게임 서버에 기록된 해당 쿠폰의 사용 이력도 삭제됩니다.'))return;if(prompt('삭제하려면 쿠폰번호를 다시 입력하세요.')!==code)return;try{await safeRequest('/api/event/admin/coupon/delete',{code});await refresh();message('appStatus',code+' 쿠폰을 삭제했습니다.',true)}catch(error){message('appStatus',errorText(error))}}
+
+/* 2026-11-18 문의함: 홈페이지 문의하기로 들어온 글 · 답변(게임 계정이면 게임 우편으로도) · 닫기 */
+const QST={open:'새 문의',answered:'답변 완료',closed:'닫음'};
+async function refreshInbox(){const d=await safeRequest('/api/inquiry/admin/list',{status:$('qFilter').value});const n=(d.counts||{}).open||0;$('inboxCount').textContent=n?'('+n+')':'';renderInbox(d.inquiries||[])}
+function renderInbox(list){const box=$('qList');box.replaceChildren();if(!list.length){const p=document.createElement('p');p.className='hint';p.textContent='문의가 없습니다.';box.append(p);return}
+ for(const q of list){const c=document.createElement('div');c.className='card';c.style.cssText='background:#121015;margin:12px 0';
+  const h=document.createElement('div');h.className='row';const t=document.createElement('strong');t.textContent='['+q.categoryName+'] '+q.title;const m=document.createElement('span');m.className='hint';
+  m.textContent=(q.nickname?'🎮 '+q.nickname+' ('+q.uid+')':'손님')+(q.email?' · ✉ '+q.email:'')+' · '+new Date(q.created*1000).toLocaleString('ko-KR',{dateStyle:'short',timeStyle:'short'})+' · '+(QST[q.status]||q.status)+(q.lang&&q.lang!=='ko'?' · '+q.lang:'');h.append(t,m);
+  const b=document.createElement('p');b.style.whiteSpace='pre-wrap';b.textContent=q.body;
+  const ta=document.createElement('textarea');ta.maxLength=2000;ta.placeholder=q.uid?'답변 (게임 우편으로도 보내져요)':'답변 기록 (이메일로는 직접 답장해 주세요)';ta.value=q.reply||'';
+  const a=document.createElement('div');a.className='actions';const send=document.createElement('button');send.textContent=q.reply?'답변 수정':'답변 저장';
+  send.addEventListener('click',async()=>{if(!ta.value.trim())return message('appStatus','답변 내용을 적어 주세요.');try{await safeRequest('/api/inquiry/admin/reply',{id:q.id,reply:ta.value});message('appStatus',q.uid?'답변을 저장하고 게임 우편으로 보냈습니다.':'답변을 저장했습니다. 이메일로도 답장해 주세요.',true);await refreshInbox()}catch(e){message('appStatus',errorText(e))}});
+  a.append(send);if(q.email){const mail=document.createElement('a');mail.className='secondary';mail.style.cssText='padding:12px;color:#efdfd7';mail.textContent='✉ 이메일로 답장';mail.href='mailto:'+encodeURIComponent(q.email)+'?subject='+encodeURIComponent('[붉은 망토] 문의 답변: '+q.title)+'&body='+encodeURIComponent((ta.value||'')+'\n\n---\n'+q.body);a.append(mail)}
+  if(q.status!=='closed'){const cl=document.createElement('button');cl.className='secondary';cl.textContent='닫기';cl.addEventListener('click',async()=>{try{await safeRequest('/api/inquiry/admin/close',{id:q.id});await refreshInbox()}catch(e){message('appStatus',errorText(e))}});a.append(cl)}
+  c.append(h,b,ta,a);box.append(c)}}
+$('qFilter').addEventListener('change',()=>refreshInbox().catch(e=>message('appStatus',errorText(e))));
 </script>
 </body></html>
