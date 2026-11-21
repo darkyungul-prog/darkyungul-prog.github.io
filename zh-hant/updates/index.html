@@ -26,6 +26,7 @@
 .foot{margin-top:40px;color:#a7918a;font-size:12px;border-top:1px solid #4b3032;padding-top:24px}.foot a{color:var(--gold)}
 @media(max-width:700px){main{padding:45px 17px}.head{padding:17px 16px}.title{font-size:16px}.body{padding-left:16px;padding-right:16px;font-size:14px}}
 </style>
+<script src="/assets/srv-i18n.js"></script>
 </head>
 <body><header><a href="/zh-hant/">✦ 紅披風:阿撒茲勒的地下城</a><span><a href="/zh-hant/coupons/" class="back">優惠碼</a> · <a href="/zh-hant/community/" class="back">社群</a> · <a href="/zh-hant/" class="back">首頁 ↗</a></span></header>
 <main><div class="top"><div><div class="eyebrow">PATCH NOTES</div><h1>更新內容</h1></div><a class="other" href="/zh-hant/notices/">公告 →</a></div>
@@ -43,7 +44,7 @@ const $=id=>document.getElementById(id);
 let page=0,total=0,shown=0;const cache={};
 const fmt=t=>new Date(t*1000).toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric'});
 function badge(text,cls){const s=document.createElement('span');s.className='badge '+cls;s.textContent=text;return s}
-async function post(path,body){const r=await fetch(API+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.error||'伺服器請求失敗。');return d}
+async function post(path,body){const r=await fetch(API+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});const d=await r.json().catch(()=>({}));if(!r.ok)throw Error((window.srvT?srvT(d.error):d.error)||'伺服器請求失敗。');return d}
 function render(it,first){
   const box=document.createElement('article');box.className='item'+(it.important?' important':'')+(it.pinned?' pinned':'');box.id='n-'+it.id;
   const head=document.createElement('button');head.type='button';head.className='head';head.setAttribute('aria-expanded','false');
